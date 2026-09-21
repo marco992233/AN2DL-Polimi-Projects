@@ -1,34 +1,52 @@
-# Artificial Neural Network and Deep Learning Projects 🧠
+# Artificial Neural Network and Deep Learning — Course Projects
 
-This repository contains the projects developed for the **Artificial Neural Network and Deep Learning (AN2DL)** course at Politecnico di Milano. 
-The repository highlights practical experience in building, training, and optimizing deep learning models for Computer Vision tasks using **TensorFlow/Keras**.
+Two computer-vision projects developed for the **Artificial Neural Network and Deep Learning**
+course at Politecnico di Milano, in TensorFlow/Keras. One built on transfer learning, one
+trained entirely from scratch.
+
+**Team NNMD** — Nicolò Giallongo, Davide Goretti, Marco Fumagalli.
+Both projects were developed jointly by the three of us.
+
+## [1 — Blood Cell Classification](HW1_BloodCellClassification/)
+
+Multi-class classification of blood cell images into 8 categories, using a fine-tuned
+EfficientNetB3 with an adaptive augmentation strategy to counter class imbalance.
+
+| | Test set | Augmented test set |
+|---|---|---|
+| Accuracy | **0.9152** | 0.1740 |
+| Loss | 0.2593 | 2.2760 |
+
+The gap between the two is the honest headline of this project: the model reaches 91.5% on the
+held-out test set but collapses to 17.4% — barely above the 12.5% chance level for 8 classes —
+on the same images after augmentation. It is a sharp demonstration of how brittle a fine-tuned
+classifier can be to a shift in the input distribution.
+
+## [2 — Mars Terrain Semantic Segmentation](HW2_MarsTerrainSegmentation/)
+
+Pixel-level segmentation of 64×128 grayscale Martian terrain images into 5 surface classes,
+with a residual U-Net built from scratch — no pre-trained weights allowed.
+
+> **Final MIoU score: 0.61**, with a custom metric that excludes the dominant background class
+
+Reaching it took discarding two architectures that looked more promising on paper: a Double
+U-Net and an attention U-Net both underperformed, while reducing the bottleneck from 1024 to
+256 channels and adding residual connections is what actually moved the score.
+
+## Structure
+
+```text
+AN2DL-Polimi-Projects/
+├── HW1_BloodCellClassification/   # EfficientNetB3, transfer learning, adaptive augmentation
+└── HW2_MarsTerrainSegmentation/   # residual U-Net from scratch, custom composite loss
+```
+
+Each folder contains the notebook and the full written report.
+
+## Tools
+
+TensorFlow/Keras · NumPy · Matplotlib
 
 ---
 
-## 🔬 Project 1: Blood Cell Image Classification
-📁 **Folder:** `HW1_BloodCellClassification`
-
-**Task:** Multi-class image classification of blood cells into 8 distinct categories.
-
-In this project, we tackled a complex image classification problem using **Transfer Learning**. Due to a slight class imbalance, we implemented a custom augmentation strategy to prevent the model from overfitting on dominant classes.
-
-**Key Skills & Techniques:**
-* **Model Architecture:** Fine-tuned a pre-trained **EfficientNetB3** model.
-* **Optimization:** Replaced the top layers with Global Average Pooling (GAP), Dense layers, Batch Normalization, and Dropout layers for robust feature extraction and regularization.
-* **Data Augmentation:** Implemented an **Adaptive Data Augmentation** strategy, varying the augmentation percentage based on class representation to successfully mitigate class imbalance.
-* **Dataset Cleaning:** Identified and removed contaminated/outlier images to ensure dataset integrity.
-
----
-
-## 🪐 Project 2: Mars Terrain Semantic Segmentation
-📁 **Folder:** `HW2_MarsTerrainSegmentation`
-
-**Task:** Pixel-level semantic segmentation of $64\times128$ grayscale images of Martian terrain into 5 surface classes.
-
-This project required building a segmentation model completely from scratch, without the use of pre-trained weights. The primary challenges were severe class imbalance (e.g., very few "large rock" pixels) and sparse labels heavily dominated by the background.
-
-**Key Skills & Techniques:**
-* **Model Architecture:** Designed and trained a custom **Residual U-Net** from scratch, integrating residual connections to improve gradient flow and feature reuse.
-* **Custom Loss Function:** Developed a specialized loss function combining **Weighted Dice Loss**, **Focal Loss**, and **Sparse Categorical Cross-Entropy** to force the network to focus on hard-to-classify and underrepresented pixels.
-* **Custom Metrics:** Implemented a tailored **Mean Intersection Over Union (MIoU)** metric that ignores the background class, ensuring a rigorous and reliable evaluation of the actual terrain features.
-* **Data Augmentation:** Applied geometric augmentations (flips, rotations, translations) suited for grayscale texture-based classification.
+*Politecnico di Milano, academic year 2024/2025.*
